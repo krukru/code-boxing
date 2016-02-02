@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading;
 using Assets.SourceCode.ClientCores;
 using Assets.SourceCode.Events;
-using Assets.SourceCode.Fighters.Attacks;
+using Assets.SourceCode.Boxers.Attacks;
 using Assets.SourceCode.Strategies;
 
-namespace Assets.SourceCode.Fighters {
-    class Fighter {
+namespace Assets.SourceCode.Boxers {
+    class Boxer {
+        public event EventHandler<ControlMessageEventArgs> ControlMessage;
         public event FighterEventHandler Punched;
         public event FighterEventHandler FightEnded;
 
@@ -31,19 +32,19 @@ namespace Assets.SourceCode.Fighters {
 
         public Color FighterColor { get; private set; }
         public AbstractFighterStrategy Strategy { get; private set; }
-        public FighterApi Api { get; private set; }
+        public BoxerApi Api { get; private set; }
 
-        private Fighter opponent;
+        private Boxer opponent;
 
-        public Fighter(AbstractFighterStrategy strategy, Color color) {
+        public Boxer(AbstractFighterStrategy strategy, Color color) {
             this.Strategy = strategy;
             this.FighterColor = color;
 
-            this.Api = new FighterApi(this);
-            strategy.Fighter = this;
+            this.Api = new BoxerApi(this);
+            strategy.Boxer = this;
         }
 
-        public void StartFighting(Fighter opponent) {
+        public void StartFighting(Boxer opponent) {
             this.opponent = opponent;
             bool fightActive = true;
             while (fightActive) {

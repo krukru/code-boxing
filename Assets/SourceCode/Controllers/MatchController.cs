@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Assets.SourceCode.Fighters;
+using Assets.SourceCode.Boxers;
 using Assets.SourceCode.Strategies;
 using Assets.SourceCode.Threading;
 using UnityEngine;
 
-namespace Assets.SourceCode {
-    class FightController : MonoBehaviour {
+namespace Assets.SourceCode.Controllers {
+    class MatchController : MonoBehaviour {
 
         public enum FightResult {
             RED_WON,
@@ -25,29 +25,29 @@ namespace Assets.SourceCode {
         private FighterWorker blueFighterWorker;
 
         private void Start() {
-            Fighter redFighter = new Fighter(redStrategy, Fighter.Color.RED);
-            Fighter blueFighter = new Fighter(blueStrategy, Fighter.Color.BLUE);
+            Boxer redFighter = new Boxer(redStrategy, Boxer.Color.RED);
+            Boxer blueFighter = new Boxer(blueStrategy, Boxer.Color.BLUE);
             SubscribeToFighterEvents(redFighter);
             SubscribeToFighterEvents(blueFighter);
             ResolveFight(redFighter, blueFighter);
         }
 
-        private void SubscribeToFighterEvents(Fighter fighter) {
-            fighter.FightEnded += fighter_FightEnded;
-            fighter.Punched += fighter_Punched;
+        private void SubscribeToFighterEvents(Boxer boxer) {
+            boxer.FightEnded += fighter_FightEnded;
+            boxer.Punched += fighter_Punched;
         }
 
-        private void fighter_Punched(Fighter sender) {
+        private void fighter_Punched(Boxer sender) {
             Debug.Log(String.Format("{0} fighter punched!", sender.FighterColor));
         }
 
-        private void fighter_FightEnded(Fighter sender) {
+        private void fighter_FightEnded(Boxer sender) {
             Debug.Log("Fight ended");
         }
 
-        private void ResolveFight(Fighter redFighter, Fighter blueFighter) {
-            redFighterWorker = new FighterWorker(redFighter, blueFighter);
-            blueFighterWorker = new FighterWorker(blueFighter, redFighter);
+        private void ResolveFight(Boxer redBoxer, Boxer blueBoxer) {
+            redFighterWorker = new FighterWorker(redBoxer, blueBoxer);
+            blueFighterWorker = new FighterWorker(blueBoxer, redBoxer);
 
             Thread redFighterThread = new Thread(redFighterWorker.DoWork);
             Thread blueFighterThread = new Thread(blueFighterWorker.DoWork);

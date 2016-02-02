@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Assets.SourceCode.ClientCores;
-using Assets.SourceCode.Fighters;
+using Assets.SourceCode.Boxers;
 
 namespace Assets.SourceCode.Strategies {
     abstract class AbstractFighterStrategy {
 
-        private Fighter fighter;
+        private Boxer boxer;
 
-        public Fighter Fighter {
-            get { return fighter; }
+        public Boxer Boxer {
+            get { return boxer; }
             set {
                 if (value == null) {
                     throw new ArgumentNullException("Fighter is null");
                 }
-                if (fighter != null) {
+                if (boxer != null) {
                     throw new InvalidOperationException("Fighter is already set");
                 }
-                this.fighter = value;
+                this.boxer = value;
             }
         }
 
-        protected FighterApi Do { get { return fighter.Api; } }
+        protected BoxerApi Do { get { return boxer.Api; } }
 
         public abstract void Act();
     }

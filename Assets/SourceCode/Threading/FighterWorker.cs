@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.SourceCode.Fighters;
+using Assets.SourceCode.Boxers;
 
 namespace Assets.SourceCode.Threading {
     class FighterWorker {
-        public Fighter Player { get; private set; }
-        public Fighter Opponent { get; private set; }
+        public Boxer Player { get; private set; }
+        public Boxer Opponent { get; private set; }
 
-        public FighterWorker(Fighter player, Fighter opponent) {
+        public FighterWorker(Boxer player, Boxer opponent) {
             this.Player = player;
             this.Opponent = opponent;
         }

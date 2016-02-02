@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.SourceCode.Fighters.Attacks {
+namespace Assets.SourceCode.Boxers.Attacks {
     abstract class AbstractAttack {
         internal AbstractAttack() { }
 
