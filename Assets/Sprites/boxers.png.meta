@@ -1,12 +1,22 @@
 fileFormatVersion: 2
 guid: c1f3dcbde5e823841ab0f5065be22cff
-timeCreated: 1454370763
+timeCreated: 1454426950
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: boxers_0
-    21300002: boxers_1
-    21300004: boxers_2
+    21300000: boxer1_0_0
+    21300002: boxer1_1_0
+    21300004: boxer1_1_1
+    21300006: boxer1_0_1
+    21300008: boxer1_2_0
+    21300010: boxer1_2_1
+    21300012: boxer1_2_2
+    21300014: boxer1_2_3
+    21300016: boxer1_2_4
+    21300018: boxer1_2_5
+    21300020: boxer1_2_6
+    21300022: boxer1_2_7
+    21300024: boxer1_2_8
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -53,52 +63,186 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: boxers_0
+    - name: boxer1_0_0
       rect:
         serializedVersion: 2
         x: 8
         y: 1600
         width: 30
         height: 63
-      alignment: 1
-      pivot: {x: 0, y: 1}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: boxers_1
+    - name: boxer1_1_0
       rect:
         serializedVersion: 2
         x: 8
         y: 1528
         width: 37
         height: 62
-      alignment: 1
-      pivot: {x: 0, y: 1}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 6, y: 0}
-        - {x: 0, y: -5}
-        - {x: 0, y: -62}
-        - {x: 37, y: -62}
-        - {x: 37, y: -1}
-        - {x: 32, y: 0}
-    - name: boxers_2
+      - - {x: 30, y: 22}
+        - {x: 37, y: 39}
+        - {x: 37, y: 61}
+        - {x: 32, y: 62}
+        - {x: 2, y: 62}
+        - {x: 0, y: 61}
+        - {x: 0, y: 0}
+        - {x: 37, y: 0}
+    - name: boxer1_1_1
       rect:
         serializedVersion: 2
         x: 56
         y: 1528
         width: 45
         height: 62
-      alignment: 1
-      pivot: {x: 0, y: 1}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 9, y: 0}
-        - {x: 0, y: -10}
-        - {x: 0, y: -62}
-        - {x: 40, y: -62}
-        - {x: 45, y: -37}
-        - {x: 45, y: -4}
-        - {x: 30, y: 0}
+      - - {x: 29, y: 62}
+        - {x: 10, y: 62}
+        - {x: 0, y: 51}
+        - {x: 0, y: 0}
+        - {x: 40, y: 0}
+        - {x: 45, y: 12}
+        - {x: 45, y: 58}
+        - {x: 44, y: 59}
+    - name: boxer1_0_1
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 1600
+        width: 31
+        height: 63
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: boxer1_2_0
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 1456
+        width: 31
+        height: 61
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: boxer1_2_1
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 1456
+        width: 29
+        height: 62
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: boxer1_2_2
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 1456
+        width: 29
+        height: 62
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: boxer1_2_3
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 1456
+        width: 34
+        height: 61
+      alignment: 9
+      pivot: {x: 0.15983357, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5.4343414, y: 0}
+        - {x: 28.565659, y: 0}
+        - {x: 28.565659, y: 24}
+        - {x: 25.565659, y: 52}
+        - {x: 16.565659, y: 61}
+        - {x: 1.5656586, y: 61}
+        - {x: -5.4343414, y: 59}
+    - name: boxer1_2_4
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 1456
+        width: 30
+        height: 55
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: boxer1_2_5
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 1456
+        width: 31
+        height: 47
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: boxer1_2_6
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1456
+        width: 34
+        height: 62
+      alignment: 9
+      pivot: {x: 0.17033117, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 28.20874, y: 62}
+        - {x: -4.79126, y: 62}
+        - {x: -5.79126, y: 59}
+        - {x: -5.79126, y: 0}
+        - {x: 9.20874, y: 0}
+        - {x: 9.20874, y: 4}
+        - {x: 18.20874, y: 0}
+        - {x: 28.20874, y: 0}
+    - name: boxer1_2_7
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 1456
+        width: 37
+        height: 61
+      alignment: 9
+      pivot: {x: 0.23657392, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8.753235, y: 61}
+        - {x: -8.753235, y: 27}
+        - {x: -3.7532349, y: 0}
+        - {x: 28.246765, y: 0}
+        - {x: 28.246765, y: 43}
+        - {x: 18.246765, y: 61}
+    - name: boxer1_2_8
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 1456
+        width: 29
+        height: 59
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 

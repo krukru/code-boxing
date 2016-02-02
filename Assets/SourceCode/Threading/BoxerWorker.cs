@@ -5,11 +5,11 @@ using System.Text;
 using Assets.SourceCode.Boxers;
 
 namespace Assets.SourceCode.Threading {
-    class FighterWorker {
+    class BoxerWorker {
         public Boxer Player { get; private set; }
         public Boxer Opponent { get; private set; }
 
-        public FighterWorker(Boxer player, Boxer opponent) {
+        public BoxerWorker(Boxer player, Boxer opponent) {
             this.Player = player;
             this.Opponent = opponent;
         }

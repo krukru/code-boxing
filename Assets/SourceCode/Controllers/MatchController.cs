@@ -18,44 +18,77 @@ namespace Assets.SourceCode.Controllers {
             MUTUAL_KO,
         }
 
-        private AbstractFighterStrategy redStrategy = new TestStrategy();
-        private AbstractFighterStrategy blueStrategy = new DerpStrategy();
+        public BoxerVisualsController redBoxerVisualsController;
+        public BoxerVisualsController blueBoxerVisualsController;
 
-        private FighterWorker redFighterWorker;
-        private FighterWorker blueFighterWorker;
+        public Boxer redBoxer;
+        public Boxer blueBoxer;
+
+        private AbstractBoxingStrategy redStrategy = new TestStrategy();
+        private AbstractBoxingStrategy blueStrategy = new DerpStrategy();
+
+        private BoxerWorker redBoxerWorker;
+        private BoxerWorker blueBoxerWorker;
 
         private void Start() {
-            Boxer redFighter = new Boxer(redStrategy, Boxer.Color.RED);
-            Boxer blueFighter = new Boxer(blueStrategy, Boxer.Color.BLUE);
-            SubscribeToFighterEvents(redFighter);
-            SubscribeToFighterEvents(blueFighter);
-            ResolveFight(redFighter, blueFighter);
+            this.redBoxer = new Boxer(redStrategy, Boxer.Color.RED);
+            this.blueBoxer = new Boxer(blueStrategy, Boxer.Color.BLUE);
+            SubscribeToBoxerEvents(redBoxer);
+            SubscribeToBoxerEvents(blueBoxer);
+            redBoxer.opponent = blueBoxer;
+            blueBoxer.opponent = redBoxer;
+            //ResolveFight(redBoxer, blueBoxer);
         }
 
-        private void SubscribeToFighterEvents(Boxer boxer) {
-            boxer.FightEnded += fighter_FightEnded;
-            boxer.Punched += fighter_Punched;
+        private void SubscribeToBoxerEvents(Boxer boxer) {
+            boxer.FightEnded += boxer_FightEnded;
+            boxer.AttackStarted += boxer_AttackStarted;
+            boxer.AttackReceived += boxer_AttackReceived;
+            boxer.StanceChanged += boxer_StanceChanged;
         }
 
-        private void fighter_Punched(Boxer sender) {
-            Debug.Log(String.Format("{0} fighter punched!", sender.FighterColor));
+        void boxer_AttackStarted(Boxer sender, EventArgs eventArgs) {
+            BoxerVisualsController boxerController = GetController(sender);
+            boxerController.Attack(Assets.SourceCode.Boxers.Attacks.Attacks.Jab);
         }
 
-        private void fighter_FightEnded(Boxer sender) {
+        void boxer_AttackReceived(Boxer sender, Events.BoxerAttackEventArgs eventArgs) {
+            Debug.Log("Here");
+            BoxerVisualsController boxerController = GetController(sender);
+            boxerController.AttackReceived();
+        }
+
+        void boxer_StanceChanged(Boxer sender, EventArgs eventArgs) {
+            BoxerVisualsController boxerController = GetController(sender);
+            boxerController.SetStance(sender.BoxerStance);
+        }
+
+        private BoxerVisualsController GetController(Boxer sender) {
+            switch (sender.BoxerColor) {
+                case Boxer.Color.RED:
+                    return redBoxerVisualsController;
+                case Boxer.Color.BLUE:
+                    return blueBoxerVisualsController;
+                default:
+                    throw new UnityException("Invalid state");
+            }
+        }
+
+        private void boxer_FightEnded(Boxer sender, EventArgs eventArgs) {
             Debug.Log("Fight ended");
         }
 
         private void ResolveFight(Boxer redBoxer, Boxer blueBoxer) {
-            redFighterWorker = new FighterWorker(redBoxer, blueBoxer);
-            blueFighterWorker = new FighterWorker(blueBoxer, redBoxer);
+            redBoxerWorker = new BoxerWorker(redBoxer, blueBoxer);
+            blueBoxerWorker = new BoxerWorker(blueBoxer, redBoxer);
 
-            Thread redFighterThread = new Thread(redFighterWorker.DoWork);
-            Thread blueFighterThread = new Thread(blueFighterWorker.DoWork);
+            Thread redBoxerThread = new Thread(redBoxerWorker.DoWork);
+            Thread blueBoxerThread = new Thread(blueBoxerWorker.DoWork);
 
             //start the fight in 5 seconds
             DateTime startTime = DateTime.Now.AddSeconds(5);
-            redFighterThread.Start(startTime);
-            blueFighterThread.Start(startTime);
+            redBoxerThread.Start(startTime);
+            blueBoxerThread.Start(startTime);
             Debug.Log("Threads started");
         }
     }

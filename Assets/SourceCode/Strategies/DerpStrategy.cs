@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Assets.SourceCode.Strategies {
-    class DerpStrategy : AbstractFighterStrategy {
+    class DerpStrategy : AbstractBoxingStrategy {
         public override void Act() {
             //derp
         }

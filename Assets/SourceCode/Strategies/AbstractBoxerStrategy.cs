@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.SourceCode.ClientCores;
+using Assets.SourceCode.Client;
 using Assets.SourceCode.Boxers;
 
 namespace Assets.SourceCode.Strategies {
-    abstract class AbstractFighterStrategy {
+    abstract class AbstractBoxingStrategy {
 
         private Boxer boxer;
 
@@ -14,10 +14,10 @@ namespace Assets.SourceCode.Strategies {
             get { return boxer; }
             set {
                 if (value == null) {
-                    throw new ArgumentNullException("Fighter is null");
+                    throw new ArgumentNullException("Boxer is null");
                 }
                 if (boxer != null) {
-                    throw new InvalidOperationException("Fighter is already set");
+                    throw new InvalidOperationException("Boxer is already set");
                 }
                 this.boxer = value;
             }

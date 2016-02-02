@@ -6,7 +6,7 @@ using System.Threading;
 using Assets.SourceCode.Boxers;
 using Assets.SourceCode.Boxers.Attacks;
 
-namespace Assets.SourceCode.ClientCores {
+namespace Assets.SourceCode.Client {
     class BoxerApi {
 
         private Boxer boxer;
@@ -16,6 +16,12 @@ namespace Assets.SourceCode.ClientCores {
         }
         public void Attack(AbstractAttack attack) {
             boxer.Attack(attack);
+        }
+
+        public void ChangeStance(Boxer.Stance newStance) {
+            if (boxer.BoxerStance != newStance) {
+                boxer.ChangeStance(newStance);
+            }
         }
 
         private void Delay(int milis) {
