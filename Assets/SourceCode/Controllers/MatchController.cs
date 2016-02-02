@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Assets.SourceCode.Boxers;
+using Assets.SourceCode.Events;
 using Assets.SourceCode.Strategies;
 using Assets.SourceCode.Threading;
 using UnityEngine;
@@ -47,18 +48,19 @@ namespace Assets.SourceCode.Controllers {
             boxer.StanceChanged += boxer_StanceChanged;
         }
 
-        void boxer_AttackStarted(Boxer sender, EventArgs eventArgs) {
+
+        void boxer_AttackStarted(Boxer sender, BoxerAttackEventArgs eventArgs) {
             BoxerVisualsController boxerController = GetController(sender);
-            boxerController.Attack(Assets.SourceCode.Boxers.Attacks.Attacks.Jab);
+            boxerController.Attack(eventArgs.Attack);
         }
 
-        void boxer_AttackReceived(Boxer sender, Events.BoxerAttackEventArgs eventArgs) {
+        void boxer_AttackReceived(Boxer sender, BoxerAttackEventArgs eventArgs) {
             Debug.Log("Here");
             BoxerVisualsController boxerController = GetController(sender);
             boxerController.AttackReceived();
         }
 
-        void boxer_StanceChanged(Boxer sender, EventArgs eventArgs) {
+        void boxer_StanceChanged(Boxer sender) {
             BoxerVisualsController boxerController = GetController(sender);
             boxerController.SetStance(sender.BoxerStance);
         }
@@ -74,7 +76,7 @@ namespace Assets.SourceCode.Controllers {
             }
         }
 
-        private void boxer_FightEnded(Boxer sender, EventArgs eventArgs) {
+        private void boxer_FightEnded(Boxer sender) {
             Debug.Log("Fight ended");
         }
 

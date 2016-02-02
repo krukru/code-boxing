@@ -25,7 +25,7 @@ namespace Assets.SourceCode.Controllers {
             }
             else if (Input.GetKeyDown(KeyCode.A)) {
                 System.Threading.Thread t = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(matchController.redBoxer.Attack));
-                t.Start();
+                t.Start(Attacks.Jab);
                 //matchController.redBoxer.Attack(Attacks.Jab);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha5)) {

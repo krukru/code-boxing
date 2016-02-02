@@ -11,10 +11,10 @@ using Assets.SourceCode.Threading;
 
 namespace Assets.SourceCode.Boxers {
     class Boxer {
-        public event BoxerEventHandler<BoxerAttackEventArgs> AttackStarted;
-        public event BoxerEventHandler<BoxerAttackEventArgs> AttackReceived;
-        public event BoxerEventHandler FightEnded;
-        public event BoxerEventHandler StanceChanged;
+        public event BoxerAttackEventHandler AttackStarted;
+        public event BoxerAttackEventHandler AttackReceived;
+        public event BoxerSimpleEventHandler FightEnded;
+        public event BoxerSimpleEventHandler StanceChanged;
 
         public enum Color {
             RED,
@@ -55,7 +55,7 @@ namespace Assets.SourceCode.Boxers {
                 fightActive = false;
             }
             if (FightEnded != null) {
-                FightEnded(this, null);
+               // FightEnded(this, null);
             }
         }
 
@@ -70,19 +70,21 @@ namespace Assets.SourceCode.Boxers {
             Emit(StanceChanged);
         }
 
-        private void Emit(BoxerEventHandler eventHandler) {
+        private void Emit(BoxerSimpleEventHandler eventHandler) {
             if (eventHandler != null) {
                 //eventHandler(this, EventArgs.Empty);
                 EventDispatcher dispatcher = EventDispatcher.Instance;
-                dispatcher.AddEvent(eventHandler, this, EventArgs.Empty);
+                BoxerSimpleEvent boxerEvent = new BoxerSimpleEvent(eventHandler, this);
+                dispatcher.AddEvent(boxerEvent);
             }
         }
 
-        private void Emit<T>(BoxerEventHandler<T> eventHandler, T eventArgs) where T : EventArgs {
+        private void Emit(BoxerAttackEventHandler eventHandler, BoxerAttackEventArgs eventArgs) {
             if (eventHandler != null) {
                 //eventHandler(this, eventArgs);
                 EventDispatcher dispatcher = EventDispatcher.Instance;
-                dispatcher.AddEvent(eventHandler, this, eventArgs);
+                BoxerAttackEvent boxerEvent = new BoxerAttackEvent(eventHandler, this, eventArgs);
+                dispatcher.AddEvent(boxerEvent);
             }
         }
 
