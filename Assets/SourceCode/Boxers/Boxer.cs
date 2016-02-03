@@ -37,11 +37,16 @@ namespace Assets.SourceCode.Boxers {
         public AbstractBoxingStrategy Strategy { get; private set; }
         public BoxerApi Api { get; private set; }
 
+        public int HitPoints { get; private set; }
+        public int Stamina { get; private set; }
+
         public Boxer opponent; //change to private
 
         public Boxer(AbstractBoxingStrategy strategy, Color color) {
             this.Strategy = strategy;
             this.BoxerColor = color;
+            this.HitPoints = MAX_HIT_POINTS;
+            this.Stamina = MAX_STAMINA;
 
             this.Api = new BoxerApi(this);
             strategy.Boxer = this;
@@ -50,9 +55,13 @@ namespace Assets.SourceCode.Boxers {
         public void StartFighting(Boxer opponent) {
             this.opponent = opponent;
             bool fightActive = true;
+            int safety = 50;
             while (fightActive) {
                 Strategy.Act();
-                fightActive = false;
+                safety--;
+                if (safety < 0) {
+                    break;
+                }
             }
             if (FightEnded != null) {
                // FightEnded(this, null);
@@ -60,6 +69,7 @@ namespace Assets.SourceCode.Boxers {
         }
 
         public void Attack(AbstractAttack attack) {
+            this.Stamina = Math.Max(0, this.Stamina - attack.StaminaCost);
             Emit(AttackStarted, new BoxerAttackEventArgs(attack));
             int castTime = attack.CastTimeInMs;
             Thread.Sleep(castTime);
@@ -89,6 +99,7 @@ namespace Assets.SourceCode.Boxers {
         }
 
         public void AttackLanded(AbstractAttack attack) {
+            this.HitPoints -= attack.FullDamage;
             Emit(AttackReceived, new BoxerAttackEventArgs(attack));
         }
 

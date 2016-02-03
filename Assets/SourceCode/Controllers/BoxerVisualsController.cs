@@ -20,10 +20,19 @@ namespace Assets.SourceCode.Controllers {
 
         private const string RECEIVED_ATTACK = "ReceivedAttack";
 
-        public void Attack(AbstractAttack attack) {
+        private const string ATTACK_ANIMATION_SPEED = "SpeedMultiplier";
+
+        public void StartAttack(Boxer attacker, AbstractAttack attack) {
+            staminaSlider.value = attacker.Stamina;
             string className = attack.GetType().Name;
             string attackTrigger = String.Format("Attack{0}", className);
+            float speedMultiplier = 1000f / attack.CastTimeInMs;
+            boxerAnimator.SetFloat(ATTACK_ANIMATION_SPEED, speedMultiplier);
             boxerAnimator.SetTrigger(attackTrigger);
+        }
+        public void AttackReceived(Boxer receiver) {
+            boxerAnimator.SetTrigger(RECEIVED_ATTACK);
+            hpSlider.value = receiver.HitPoints;
         }
 
         public void SetStance(Boxer.Stance stance) {
@@ -45,10 +54,6 @@ namespace Assets.SourceCode.Controllers {
                     throw new UnityException("Undefined stance");
             }
             boxerAnimator.SetTrigger(stanceTrigger);
-        }
-
-        public void AttackReceived() {
-            boxerAnimator.SetTrigger(RECEIVED_ATTACK);
         }
     }
 }

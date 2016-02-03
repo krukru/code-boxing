@@ -18,7 +18,7 @@ namespace Assets.SourceCode.Boxers.Attacks {
         }
 
         public override int CastTimeInMs {
-            get { return 600; }
+            get { return 200; }
         }
 
         public override int StunDurationInMs {

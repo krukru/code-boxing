@@ -9,7 +9,7 @@ namespace Assets.SourceCode.Strategies {
     class TestStrategy : AbstractBoxingStrategy {
 
         public override void Act() {
-            Do.ChangeStance(Boxer.Stance.BLOCKING);
+            Do.Attack(Attacks.Jab);
         }
     }
 }

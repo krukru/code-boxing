@@ -51,13 +51,12 @@ namespace Assets.SourceCode.Controllers {
 
         void boxer_AttackStarted(Boxer sender, BoxerAttackEventArgs eventArgs) {
             BoxerVisualsController boxerController = GetController(sender);
-            boxerController.Attack(eventArgs.Attack);
+            boxerController.StartAttack(sender, eventArgs.Attack);
         }
 
         void boxer_AttackReceived(Boxer sender, BoxerAttackEventArgs eventArgs) {
-            Debug.Log("Here");
             BoxerVisualsController boxerController = GetController(sender);
-            boxerController.AttackReceived();
+            boxerController.AttackReceived(sender);
         }
 
         void boxer_StanceChanged(Boxer sender) {
