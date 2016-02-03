@@ -38,13 +38,16 @@ namespace Assets.SourceCode.Boxers {
         public AbstractBoxingStrategy Strategy { get; private set; }
         public BoxerApi Api { get; private set; }
 
-        public int HitPoints { get; private set; }
+        public double HitPoints { get; private set; }
         public int Stamina { get; private set; }
         public bool IsCastingAttack { get; private set; }
+        public int StunDuration { get; private set; }
 
-        public Boxer opponent; //change to private
+        private Boxer opponent;
 
         private DamageResolverService damageService = new DamageResolverService();
+
+        private Stance stanceBeforeStun;
 
         public Boxer(AbstractBoxingStrategy strategy, Color color) {
             this.Strategy = strategy;
@@ -90,10 +93,25 @@ namespace Assets.SourceCode.Boxers {
             }
         }
         private void AttackLanded(AbstractAttack attack, double attackIntensityFactor) {
-            int damage = damageService.GetDamage(this, attack, attackIntensityFactor);
+            double damage = damageService.GetDamage(this, attack, attackIntensityFactor);
             if (damage > 0) {
                 this.HitPoints -= damage;
                 Emit(AttackReceived, new BoxerAttackEventArgs(attack));
+                int stunDuration = damageService.GetStunDuration(this, attack, attackIntensityFactor);
+                if (stunDuration > 0) {
+                    AddStun(stunDuration);
+                }
+            }
+        }
+
+        private void AddStun(int stunDuration) {
+            if (stunDuration < 0) {
+                throw new ArgumentException();
+            }
+            this.StunDuration += stunDuration;
+            if (BoxerStance != Stance.STAGGERING) {
+                this.stanceBeforeStun = BoxerStance;
+                ChangeStance(Stance.STAGGERING);
             }
         }
 
@@ -123,6 +141,11 @@ namespace Assets.SourceCode.Boxers {
                 BoxerEvent boxerEvent = new BoxerEvent(eventHandler, this, eventArgs);
                 dispatcher.AddEvent(boxerEvent);
             }
+        }
+
+        public void ClearStun() {
+            this.StunDuration = 0;
+            ChangeStance(stanceBeforeStun);
         }
     }
 }

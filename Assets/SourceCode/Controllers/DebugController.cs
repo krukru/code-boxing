@@ -38,20 +38,28 @@ namespace Assets.SourceCode.Controllers {
                 matchController.blueBoxer.ChangeStance(Boxer.Stance.STAGGERING);
             }
             else if (Input.GetKeyDown(KeyCode.A)) {
-                matchController.redBoxerThread = new Thread(new ParameterizedThreadStart(matchController.redBoxer.Api.Attack));
-                matchController.redBoxerThread.Start(Attacks.Jab);
+                matchController.redBoxer.Api.Attack(Attacks.Jab);
             }
             else if (Input.GetKeyDown(KeyCode.S)) {
-                matchController.redBoxerThread = new Thread(new ThreadStart(matchController.redBoxer.Api.RecoverStamina));
-                matchController.redBoxerThread.Start();
+                matchController.redBoxer.Api.Attack(Attacks.Haymaker);
+            }
+            else if (Input.GetKeyDown(KeyCode.D)) {
+                matchController.redBoxer.Api.Attack(Attacks.LiverShot);
+            }
+            else if (Input.GetKeyDown(KeyCode.F)) {
+                matchController.redBoxer.Api.RecoverStamina();
             }
             else if (Input.GetKeyDown(KeyCode.Q)) {
-                matchController.blueBoxerThread = new Thread(new ParameterizedThreadStart(matchController.blueBoxer.Api.Attack));
-                matchController.blueBoxerThread.Start(Attacks.Jab);
+                matchController.blueBoxer.Api.Attack(Attacks.Jab);
             }
             else if (Input.GetKeyDown(KeyCode.W)) {
-                matchController.blueBoxerThread = new Thread(new ThreadStart(matchController.blueBoxer.Api.RecoverStamina));
-                matchController.blueBoxerThread.Start();
+                matchController.blueBoxer.Api.Attack(Attacks.Haymaker);
+            }
+            else if (Input.GetKeyDown(KeyCode.E)) {
+                matchController.blueBoxer.Api.Attack(Attacks.LiverShot);
+            }
+            else if (Input.GetKeyDown(KeyCode.R)) {
+                matchController.blueBoxer.Api.RecoverStamina();
             }
         }
     }

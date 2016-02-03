@@ -37,7 +37,7 @@ namespace Assets.SourceCode.Controllers {
         }
 
         public void UpdateHpSlider(Boxer boxer) {
-            hpSlider.value = boxer.HitPoints;
+            hpSlider.value = (float)boxer.HitPoints;
         }
 
         public void UpdateStaminaSlider(Boxer boxer) {

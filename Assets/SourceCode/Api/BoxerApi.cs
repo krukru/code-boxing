@@ -15,11 +15,8 @@ namespace Assets.SourceCode.Api {
             this.boxer = boxer;
         }
         public void Attack(AbstractAttack attack) {
+            ResolveAccumulatedStun();
             boxer.Attack(attack);
-        }
-        internal void Attack(object param) {
-            //for debugging, remove method in production
-            Attack((AbstractAttack)param);
         }
 
         public void RecoverStamina() {
@@ -28,6 +25,7 @@ namespace Assets.SourceCode.Api {
         }
 
         public void ChangeStance(Boxer.Stance newStance) {
+            ResolveAccumulatedStun();
             if (boxer.BoxerStance != newStance) {
                 boxer.ChangeStance(newStance);
             }
@@ -38,7 +36,18 @@ namespace Assets.SourceCode.Api {
         }
 
         private void ResolveAccumulatedStun() {
-
+            if (boxer.StunDuration > 0) {
+                try {
+                    Thread.Sleep(boxer.StunDuration);
+                }
+                catch (ThreadInterruptedException ex) {
+                    //this should never happen! rethrow and log the error
+                    throw ex;
+                }
+                finally {
+                    boxer.ClearStun();
+                }
+            }
         }
     }
 }
