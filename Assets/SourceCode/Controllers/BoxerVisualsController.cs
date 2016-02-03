@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.SourceCode.Controllers {
+#pragma warning disable 0649
     class BoxerVisualsController : MonoBehaviour {
         public Animator boxerAnimator;
         public Slider hpSlider;
@@ -23,7 +24,7 @@ namespace Assets.SourceCode.Controllers {
         private const string ATTACK_ANIMATION_SPEED = "SpeedMultiplier";
 
         public void StartAttack(Boxer attacker, AbstractAttack attack) {
-            staminaSlider.value = attacker.Stamina;
+            UpdateStaminaSlider(attacker);
             string className = attack.GetType().Name;
             string attackTrigger = String.Format("Attack{0}", className);
             float speedMultiplier = 1000f / attack.CastTimeInMs;
@@ -32,7 +33,15 @@ namespace Assets.SourceCode.Controllers {
         }
         public void AttackReceived(Boxer receiver) {
             boxerAnimator.SetTrigger(RECEIVED_ATTACK);
-            hpSlider.value = receiver.HitPoints;
+            UpdateHpSlider(receiver);
+        }
+
+        public void UpdateHpSlider(Boxer boxer) {
+            hpSlider.value = boxer.HitPoints;
+        }
+
+        public void UpdateStaminaSlider(Boxer boxer) {
+            staminaSlider.value = boxer.Stamina;
         }
 
         public void SetStance(Boxer.Stance stance) {

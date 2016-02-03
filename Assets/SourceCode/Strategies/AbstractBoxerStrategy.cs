@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.SourceCode.Client;
 using Assets.SourceCode.Boxers;
+using Assets.SourceCode.Api;
 
 namespace Assets.SourceCode.Strategies {
     abstract class AbstractBoxingStrategy {

@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Assets.SourceCode.Client;
+using Assets.SourceCode.Api;
 using Assets.SourceCode.Events;
 using Assets.SourceCode.Boxers.Attacks;
 using Assets.SourceCode.Strategies;
 using Assets.SourceCode.Threading;
+using Assets.SourceCode.Services;
 
 namespace Assets.SourceCode.Boxers {
     class Boxer {
-        public event BoxerAttackEventHandler AttackStarted;
-        public event BoxerAttackEventHandler AttackReceived;
-        public event BoxerSimpleEventHandler FightEnded;
-        public event BoxerSimpleEventHandler StanceChanged;
+        public event BoxerEventHandler<BoxerAttackEventArgs> AttackStarted;
+        public event BoxerEventHandler<BoxerAttackEventArgs> AttackReceived;
+        public event BoxerEventHandler<BoxerStanceChangedEventArgs> StanceChanged;
+        public event BoxerEventHandler<BoxerStaminaChangedEventArgs> StaminaRecovered;
+        public event BoxerEventHandler FightEnded;
 
         public enum Color {
             RED,
@@ -27,10 +29,9 @@ namespace Assets.SourceCode.Boxers {
             STAGGERING
         }
 
-        private const int MAX_HIT_POINTS = 100;
-        private const int MAX_STAMINA = 100;
-        private const int STAMINA_RECOVERY_AMOUNT = 25;
-        private const double MINIMAL_ATTACK_INTENSITY_FACTOR = 0.1;
+        public const int MAX_HIT_POINTS = 100; //maybe allow this to change as a bonus for the boxer
+        public const int MAX_STAMINA = 100; //same as above
+        public const int STAMINA_RECOVERY_AMOUNT = 25; //same as above
 
         public Color BoxerColor { get; private set; }
         public Stance BoxerStance { get; private set; }
@@ -39,8 +40,11 @@ namespace Assets.SourceCode.Boxers {
 
         public int HitPoints { get; private set; }
         public int Stamina { get; private set; }
+        public bool IsCastingAttack { get; private set; }
 
         public Boxer opponent; //change to private
+
+        private DamageResolverService damageService = new DamageResolverService();
 
         public Boxer(AbstractBoxingStrategy strategy, Color color) {
             this.Strategy = strategy;
@@ -64,47 +68,61 @@ namespace Assets.SourceCode.Boxers {
                 }
             }
             if (FightEnded != null) {
-               // FightEnded(this, null);
+                // FightEnded(this, null);
             }
         }
 
         public void Attack(AbstractAttack attack) {
+            this.IsCastingAttack = true;
+            double attackIntensityFactor = damageService.GetAttackIntensityFactor(this);
             this.Stamina = Math.Max(0, this.Stamina - attack.StaminaCost);
             Emit(AttackStarted, new BoxerAttackEventArgs(attack));
             int castTime = attack.CastTimeInMs;
-            Thread.Sleep(castTime);
-            opponent.AttackLanded(attack);
+            try {
+                Thread.Sleep(castTime);
+                opponent.AttackLanded(attack, attackIntensityFactor);
+            }
+            catch (ThreadInterruptedException ex) {
+                //attack interrupted
+            }
+            finally {
+                this.IsCastingAttack = false;
+            }
         }
-        public void ChangeStance(Stance newStance) {
-            this.BoxerStance = newStance;
-            Emit(StanceChanged);
+        private void AttackLanded(AbstractAttack attack, double attackIntensityFactor) {
+            int damage = damageService.GetDamage(this, attack, attackIntensityFactor);
+            if (damage > 0) {
+                this.HitPoints -= damage;
+                Emit(AttackReceived, new BoxerAttackEventArgs(attack));
+            }
         }
 
-        private void Emit(BoxerSimpleEventHandler eventHandler) {
+        public void RecoverStamina() {
+            this.Stamina = Math.Min(MAX_STAMINA, Stamina + STAMINA_RECOVERY_AMOUNT);
+            Emit(StaminaRecovered, new BoxerStaminaChangedEventArgs(Stamina));
+        }
+
+        public void ChangeStance(Stance newStance) {
+            this.BoxerStance = newStance;
+            Emit(StanceChanged, new BoxerStanceChangedEventArgs(newStance));
+        }
+
+        private void Emit(BoxerEventHandler eventHandler) {
             if (eventHandler != null) {
                 //eventHandler(this, EventArgs.Empty);
                 EventDispatcher dispatcher = EventDispatcher.Instance;
-                BoxerSimpleEvent boxerEvent = new BoxerSimpleEvent(eventHandler, this);
+                BoxerEvent boxerEvent = new BoxerEvent(eventHandler, this);
                 dispatcher.AddEvent(boxerEvent);
             }
         }
 
-        private void Emit(BoxerAttackEventHandler eventHandler, BoxerAttackEventArgs eventArgs) {
+        private void Emit<T>(BoxerEventHandler<T> eventHandler, T eventArgs) where T : EventArgs {
             if (eventHandler != null) {
                 //eventHandler(this, eventArgs);
                 EventDispatcher dispatcher = EventDispatcher.Instance;
-                BoxerAttackEvent boxerEvent = new BoxerAttackEvent(eventHandler, this, eventArgs);
+                BoxerEvent boxerEvent = new BoxerEvent(eventHandler, this, eventArgs);
                 dispatcher.AddEvent(boxerEvent);
             }
-        }
-
-        public void AttackLanded(AbstractAttack attack) {
-            this.HitPoints -= attack.FullDamage;
-            Emit(AttackReceived, new BoxerAttackEventArgs(attack));
-        }
-
-        internal void Attack(object param) {
-            Attack((AbstractAttack)param);
         }
     }
 }

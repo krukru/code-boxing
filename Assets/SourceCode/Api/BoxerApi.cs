@@ -6,7 +6,7 @@ using System.Threading;
 using Assets.SourceCode.Boxers;
 using Assets.SourceCode.Boxers.Attacks;
 
-namespace Assets.SourceCode.Client {
+namespace Assets.SourceCode.Api {
     class BoxerApi {
 
         private Boxer boxer;
@@ -16,6 +16,15 @@ namespace Assets.SourceCode.Client {
         }
         public void Attack(AbstractAttack attack) {
             boxer.Attack(attack);
+        }
+        internal void Attack(object param) {
+            //for debugging, remove method in production
+            Attack((AbstractAttack)param);
+        }
+
+        public void RecoverStamina() {
+            Delay(1000);
+            boxer.RecoverStamina();
         }
 
         public void ChangeStance(Boxer.Stance newStance) {

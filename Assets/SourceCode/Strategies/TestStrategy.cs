@@ -10,6 +10,12 @@ namespace Assets.SourceCode.Strategies {
 
         public override void Act() {
             Do.Attack(Attacks.Jab);
+            Do.Attack(Attacks.Jab);
+            Do.RecoverStamina();
+            Do.Attack(Attacks.Jab);
+            Do.Attack(Attacks.Jab);
+            Do.RecoverStamina();
+            Do.RecoverStamina();
         }
     }
 }

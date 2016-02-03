@@ -20,29 +20,20 @@ namespace Assets.SourceCode.Threading {
             instance = this.GetComponent<EventDispatcher>();
         }
 
-        private Queue<BoxerSimpleEvent> events = new Queue<BoxerSimpleEvent>();
-        private Queue<BoxerAttackEvent> events2 = new Queue<BoxerAttackEvent>();
+        private Queue<BoxerEvent> events = new Queue<BoxerEvent>();
         private Boxer sender;
         private EventArgs args;
 
 
         private void Update() {
             if (events.Count > 0) {
-                BoxerSimpleEvent boxerEvent = events.Dequeue();
-                boxerEvent.EventHandler(boxerEvent.Sender);
-            }
-            if (events2.Count > 0) {
-                BoxerAttackEvent boxerEvent = events2.Dequeue();
-                boxerEvent.EventHandler(boxerEvent.Sender,boxerEvent.EventArgs );
+                BoxerEvent boxerEvent = events.Dequeue();
+                boxerEvent.EventHandler.DynamicInvoke(boxerEvent.Sender, boxerEvent.EventArgs);
             }
         }
 
-        public void AddEvent(BoxerSimpleEvent boxerEvent) {
+        public void AddEvent(BoxerEvent boxerEvent) {
             events.Enqueue(boxerEvent);
-        }
-
-        public void AddEvent(BoxerAttackEvent boxerEvent) {
-            events2.Enqueue(boxerEvent);
         }
     }
 }
