@@ -15,7 +15,7 @@ namespace Assets.SourceCode.Services {
         public double GetDamage(Boxer defender, AbstractAttack attack, double attackIntensityFactor) {
             double result;
             if (defender.IsCastingAttack) {
-                result = attack.FullDamage * attackIntensityFactor * COUNTER_ATTACK_DAMAGE_MULTIPLIER;
+                result = attack.FullDamage * COUNTER_ATTACK_DAMAGE_MULTIPLIER;
             }
             else {
                 switch (defender.BoxerStance) {

@@ -10,17 +10,14 @@ namespace Assets.SourceCode.Strategies {
 
         private Boxer boxer;
 
-        public Boxer Boxer {
-            get { return boxer; }
-            set {
-                if (value == null) {
-                    throw new ArgumentNullException("Boxer is null");
-                }
-                if (boxer != null) {
-                    throw new InvalidOperationException("Boxer is already set");
-                }
-                this.boxer = value;
+        public void SetBoxer(Boxer value) {
+            if (value == null) {
+                throw new ArgumentNullException("Boxer is null");
             }
+            if (boxer != null) {
+                throw new InvalidOperationException("Boxer is already set");
+            }
+            this.boxer = value;
         }
 
         protected BoxerApi Do { get { return boxer.Api; } }

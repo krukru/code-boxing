@@ -16,7 +16,8 @@ namespace Assets.SourceCode.Boxers {
         public event BoxerEventHandler<BoxerAttackEventArgs> AttackReceived;
         public event BoxerEventHandler<BoxerStanceChangedEventArgs> StanceChanged;
         public event BoxerEventHandler<BoxerStaminaChangedEventArgs> StaminaRecovered;
-        public event BoxerEventHandler FightEnded;
+
+        public event BoxerEventHandler<DebugMessageEventArgs> ShitHappened;
 
         public enum Color {
             RED,
@@ -42,12 +43,19 @@ namespace Assets.SourceCode.Boxers {
         public int Stamina { get; private set; }
         public bool IsCastingAttack { get; private set; }
         public int StunDuration { get; private set; }
+        public bool IsKnockedDown {
+            get {
+                return HitPoints <= 0;
+            }
+        }
 
         private Boxer opponent;
 
         private DamageResolverService damageService = new DamageResolverService();
 
         private Stance stanceBeforeStun;
+
+        private volatile bool fightActive;
 
         public Boxer(AbstractBoxingStrategy strategy, Color color) {
             this.Strategy = strategy;
@@ -56,12 +64,12 @@ namespace Assets.SourceCode.Boxers {
             this.Stamina = MAX_STAMINA;
 
             this.Api = new BoxerApi(this);
-            strategy.Boxer = this;
+            strategy.SetBoxer(this);
         }
 
         public void StartFighting(Boxer opponent) {
             this.opponent = opponent;
-            bool fightActive = true;
+            this.fightActive = true;
             int safety = 50;
             while (fightActive) {
                 Strategy.Act();
@@ -70,9 +78,9 @@ namespace Assets.SourceCode.Boxers {
                     break;
                 }
             }
-            if (FightEnded != null) {
-                // FightEnded(this, null);
-            }
+        }
+        public void StopFighting() {
+            this.fightActive = false;
         }
 
         public void Attack(AbstractAttack attack) {
@@ -85,7 +93,7 @@ namespace Assets.SourceCode.Boxers {
                 Thread.Sleep(castTime);
                 opponent.AttackLanded(attack, attackIntensityFactor);
             }
-            catch (ThreadInterruptedException ex) {
+            catch (ThreadInterruptedException) {
                 //attack interrupted
             }
             finally {
@@ -126,8 +134,7 @@ namespace Assets.SourceCode.Boxers {
         }
 
         private void Emit(BoxerEventHandler eventHandler) {
-            if (eventHandler != null) {
-                //eventHandler(this, EventArgs.Empty);
+            if (fightActive && eventHandler != null) {
                 EventDispatcher dispatcher = EventDispatcher.Instance;
                 BoxerEvent boxerEvent = new BoxerEvent(eventHandler, this);
                 dispatcher.AddEvent(boxerEvent);
@@ -135,10 +142,29 @@ namespace Assets.SourceCode.Boxers {
         }
 
         private void Emit<T>(BoxerEventHandler<T> eventHandler, T eventArgs) where T : EventArgs {
-            if (eventHandler != null) {
-                //eventHandler(this, eventArgs);
+            if (fightActive && eventHandler != null) {
                 EventDispatcher dispatcher = EventDispatcher.Instance;
                 BoxerEvent boxerEvent = new BoxerEvent(eventHandler, this, eventArgs);
+                dispatcher.AddEvent(boxerEvent);
+            }
+        }
+
+        public void EmitDebugMessage(string message) {
+            InternalEmitDebugMessage(message, DebugMessageEventArgs.SeverityLevel.Info);
+        }
+
+        public void EmitDebugMessage(string message, DebugMessageEventArgs.SeverityLevel severity) {
+            InternalEmitDebugMessage(message, severity);
+        }
+
+        private void InternalEmitDebugMessage(string message, DebugMessageEventArgs.SeverityLevel severity) {
+            if (ShitHappened != null) {
+                System.Diagnostics.StackFrame frame = new System.Diagnostics.StackFrame(1);
+                var callerMethod = frame.GetMethod();
+                var methodName = callerMethod.Name;
+                EventDispatcher dispatcher = EventDispatcher.Instance;
+                DebugMessageEventArgs eventArgs = new DebugMessageEventArgs(methodName, message);
+                BoxerEvent boxerEvent = new BoxerEvent(ShitHappened, this, eventArgs);
                 dispatcher.AddEvent(boxerEvent);
             }
         }

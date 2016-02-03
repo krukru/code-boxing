@@ -27,13 +27,18 @@ namespace Assets.SourceCode.Threading {
 
         private void Update() {
             if (events.Count > 0) {
-                BoxerEvent boxerEvent = events.Dequeue();
+                BoxerEvent boxerEvent;
+                lock (events) {
+                    boxerEvent = events.Dequeue();
+                }
                 boxerEvent.EventHandler.DynamicInvoke(boxerEvent.Sender, boxerEvent.EventArgs);
             }
         }
 
         public void AddEvent(BoxerEvent boxerEvent) {
-            events.Enqueue(boxerEvent);
+            lock (events) {
+                events.Enqueue(boxerEvent);
+            }
         }
     }
 }

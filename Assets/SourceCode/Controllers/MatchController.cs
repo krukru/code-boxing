@@ -9,6 +9,8 @@ using Assets.SourceCode.Events;
 using Assets.SourceCode.Strategies;
 using Assets.SourceCode.Threading;
 using UnityEngine;
+using Assets.SourceCode.Strategies.Examples;
+using Assets.SourceCode.Strategies.Debug;
 
 namespace Assets.SourceCode.Controllers {
 #pragma warning disable 0649
@@ -27,8 +29,8 @@ namespace Assets.SourceCode.Controllers {
         public Boxer redBoxer;
         public Boxer blueBoxer;
 
-        private AbstractBoxingStrategy redStrategy = new TestStrategy();
-        private AbstractBoxingStrategy blueStrategy = new DerpStrategy();
+        private AbstractBoxingStrategy redStrategy = new TestRedStrategy();
+        private AbstractBoxingStrategy blueStrategy = new TestBlueStrategy();
 
         private Thread redBoxerThread;
         private Thread blueBoxerThread;
@@ -56,11 +58,14 @@ namespace Assets.SourceCode.Controllers {
         }
 
         private void SubscribeToBoxerEvents(Boxer boxer) {
-            boxer.FightEnded += boxer_FightEnded;
             boxer.AttackStarted += boxer_AttackStarted;
             boxer.AttackReceived += boxer_AttackReceived;
             boxer.StanceChanged += boxer_StanceChanged;
             boxer.StaminaRecovered += boxer_StaminaRecovered;
+            boxer.ShitHappened += boxer_ShitHappened;
+        }
+        void boxer_ShitHappened(Boxer sender, DebugMessageEventArgs eventArgs) {
+            Debug.LogWarning(String.Format("Shit happened in thread {0}, method {1} with message: {2}", eventArgs.ThreadName, eventArgs.MethodName, eventArgs.Message));
         }
 
         void boxer_StaminaRecovered(Boxer sender, EventArgs eventArgs) {
@@ -78,17 +83,22 @@ namespace Assets.SourceCode.Controllers {
             BoxerVisualsController boxerController = GetController(receiver);
             Thread boxerThread = GetThread(receiver);
             if (receiver.IsCastingAttack && boxerThread.ThreadState == ThreadState.WaitSleepJoin) {
-                blueBoxerThread.Interrupt();
+                boxerThread.Interrupt();
             }
-            boxerController.AttackReceived(receiver);
+            if (receiver.IsKnockedDown) {
+                boxerController.Knockdown(receiver);
+                redBoxer.StopFighting();
+                blueBoxer.StopFighting();
+                Debug.Log(String.Format("Loser is {0}", receiver.BoxerColor));
+            }
+            else {
+                boxerController.AttackReceived(receiver);
+            }
+            
         }
         void boxer_StanceChanged(Boxer sender, EventArgs eventArgs) {
             BoxerVisualsController boxerController = GetController(sender);
             boxerController.SetStance(sender.BoxerStance);
-        }
-
-        private void boxer_FightEnded(Boxer sender, EventArgs eventArgs) {
-            Debug.Log("Fight ended");
         }
 
         private Thread GetThread(Boxer boxer) {
@@ -130,7 +140,6 @@ namespace Assets.SourceCode.Controllers {
             }
             redBoxerThread.Start(startTime);
             blueBoxerThread.Start(startTime);
-            Debug.Log("Threads started");
         }
     }
 }

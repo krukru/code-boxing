@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using Assets.SourceCode.Boxers;
 using Assets.SourceCode.Boxers.Attacks;
+using Assets.SourceCode.Events;
 
 namespace Assets.SourceCode.Api {
     class BoxerApi {
@@ -20,8 +21,15 @@ namespace Assets.SourceCode.Api {
         }
 
         public void RecoverStamina() {
-            Delay(1000);
-            boxer.RecoverStamina();
+            try {
+                Thread.Sleep(1000);
+            }
+            catch (Exception ex) {
+                boxer.EmitDebugMessage(ex.Message, DebugMessageEventArgs.SeverityLevel.Error);
+            }
+            finally {
+                boxer.RecoverStamina();
+            }
         }
 
         public void ChangeStance(Boxer.Stance newStance) {
@@ -31,18 +39,13 @@ namespace Assets.SourceCode.Api {
             }
         }
 
-        private void Delay(int milis) {
-            Thread.Sleep(milis);
-        }
-
         private void ResolveAccumulatedStun() {
             if (boxer.StunDuration > 0) {
                 try {
                     Thread.Sleep(boxer.StunDuration);
                 }
-                catch (ThreadInterruptedException ex) {
-                    //this should never happen! rethrow and log the error
-                    throw ex;
+                catch (Exception ex) {
+                    boxer.EmitDebugMessage(ex.Message, DebugMessageEventArgs.SeverityLevel.Error);
                 }
                 finally {
                     boxer.ClearStun();

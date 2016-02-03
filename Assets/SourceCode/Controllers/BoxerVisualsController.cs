@@ -23,6 +23,8 @@ namespace Assets.SourceCode.Controllers {
 
         private const string ATTACK_ANIMATION_SPEED = "SpeedMultiplier";
 
+        private const string KNOCKDOWN = "Knockdown";
+
         public void StartAttack(Boxer attacker, AbstractAttack attack) {
             UpdateStaminaSlider(attacker);
             string className = attack.GetType().Name;
@@ -63,6 +65,10 @@ namespace Assets.SourceCode.Controllers {
                     throw new UnityException("Undefined stance");
             }
             boxerAnimator.SetTrigger(stanceTrigger);
+        }
+
+        public void Knockdown(Boxer receiver) {
+            boxerAnimator.SetTrigger(KNOCKDOWN);
         }
     }
 }

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c1f3dcbde5e823841ab0f5065be22cff
-timeCreated: 1454525612
+timeCreated: 1454534308
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -27,6 +27,8 @@ TextureImporter:
     21300040: boxer1_0_5
     21300042: boxer1_0_6
     21300044: boxer1_0_7
+    21300046: boxer1_2_9
+    21300048: boxer1_2_10
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -416,6 +418,40 @@ TextureImporter:
         - {x: 39, y: 0}
         - {x: 45, y: 23}
         - {x: 45, y: 62}
+    - name: boxer1_2_9
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 1456
+        width: 49
+        height: 50
+      alignment: 9
+      pivot: {x: 0.45008633, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 16.94577, y: 0}
+        - {x: 26.94577, y: 0}
+        - {x: 26.94577, y: 8}
+        - {x: 15.94577, y: 40}
+        - {x: 6.9457703, y: 50}
+        - {x: -22.05423, y: 50}
+        - {x: -22.05423, y: 21}
+        - {x: -3.0542297, y: 0}
+        - {x: 9.94577, y: 0}
+        - {x: 11.94577, y: 2}
+        - {x: 11.94577, y: 4}
+        - {x: 13.94577, y: 2}
+    - name: boxer1_2_10
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 1456
+        width: 60
+        height: 26
+      alignment: 9
+      pivot: {x: 0.9849818, y: 0.09234619}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 
