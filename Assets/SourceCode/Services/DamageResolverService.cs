@@ -6,7 +6,7 @@ using Assets.SourceCode.Boxers;
 using Assets.SourceCode.Boxers.Attacks;
 
 namespace Assets.SourceCode.Services {
-    class DamageResolverService {
+    public class DamageResolverService {
 
         private const double MINIMAL_ATTACK_INTENSITY_FACTOR = 0.1;
         private const double STAGGERING_DAMAGE_MULTIPLIER = 2;

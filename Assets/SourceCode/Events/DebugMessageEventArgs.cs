@@ -6,7 +6,7 @@ using System.Threading;
 using Assets.SourceCode.Boxers.Attacks;
 
 namespace Assets.SourceCode.Events {
-    class DebugMessageEventArgs : EventArgs {
+    public class DebugMessageEventArgs : EventArgs {
         public enum SeverityLevel {
             Error,
             Warning,

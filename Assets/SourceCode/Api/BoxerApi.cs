@@ -8,7 +8,7 @@ using Assets.SourceCode.Boxers.Attacks;
 using Assets.SourceCode.Events;
 
 namespace Assets.SourceCode.Api {
-    class BoxerApi {
+    public class BoxerApi {
 
         private Boxer boxer;
 

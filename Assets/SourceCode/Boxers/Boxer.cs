@@ -11,7 +11,7 @@ using Assets.SourceCode.Threading;
 using Assets.SourceCode.Services;
 
 namespace Assets.SourceCode.Boxers {
-    class Boxer {
+    public class Boxer {
         public event BoxerEventHandler<BoxerAttackEventArgs> AttackStarted;
         public event BoxerEventHandler<BoxerAttackEventArgs> AttackReceived;
         public event BoxerEventHandler<BoxerStanceChangedEventArgs> StanceChanged;

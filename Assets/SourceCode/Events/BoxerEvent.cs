@@ -5,9 +5,9 @@ using System.Text;
 using Assets.SourceCode.Boxers;
 
 namespace Assets.SourceCode.Events {
-    internal delegate void BoxerEventHandler(Boxer sender, EventArgs eventArgs);
-    internal delegate void BoxerEventHandler<T>(Boxer sender, T eventArgs) where T : EventArgs;
-    class BoxerEvent {
+    public delegate void BoxerEventHandler(Boxer sender, EventArgs eventArgs);
+    public delegate void BoxerEventHandler<T>(Boxer sender, T eventArgs) where T : EventArgs;
+    public class BoxerEvent {
 
         public Delegate EventHandler { get; private set; }
         public Boxer Sender { get; private set; }

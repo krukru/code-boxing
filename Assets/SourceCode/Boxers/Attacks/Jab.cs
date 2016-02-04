@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Assets.SourceCode.Boxers.Attacks {
-    class Jab : AbstractAttack {
+    public class Jab : AbstractAttack {
         public override int FullDamage {
             get { return 5; }
         }

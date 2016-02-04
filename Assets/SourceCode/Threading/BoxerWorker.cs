@@ -5,7 +5,7 @@ using System.Text;
 using Assets.SourceCode.Boxers;
 
 namespace Assets.SourceCode.Threading {
-    class BoxerWorker {
+    public class BoxerWorker {
         public Boxer Player { get; private set; }
         public Boxer Opponent { get; private set; }
 

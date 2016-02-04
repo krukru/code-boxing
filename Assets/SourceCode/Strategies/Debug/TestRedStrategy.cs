@@ -6,7 +6,7 @@ using Assets.SourceCode.Boxers;
 using Assets.SourceCode.Boxers.Attacks;
 
 namespace Assets.SourceCode.Strategies.Debug {
-    class TestRedStrategy : AbstractBoxingStrategy {
+    public class TestRedStrategy : AbstractBoxingStrategy {
 
         public override void Act() {
             Do.Attack(Attacks.Haymaker);

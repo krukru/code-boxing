@@ -6,7 +6,7 @@ using Assets.SourceCode.Boxers;
 using Assets.SourceCode.Boxers.Attacks;
 
 namespace Assets.SourceCode.Strategies.Examples {
-    class CounterStrategy : AbstractBoxingStrategy {
+    public class CounterStrategy : AbstractBoxingStrategy {
         public override void Act() {
             Do.ChangeStance(Boxer.Stance.BLOCKING);
             Do.Attack(Attacks.Jab);

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Assets.SourceCode.Controllers {
 #pragma warning disable 0649
-    class BoxerVisualsController : MonoBehaviour {
+    public class BoxerVisualsController : MonoBehaviour {
         public Animator boxerAnimator;
         public Slider hpSlider;
         public Slider staminaSlider;

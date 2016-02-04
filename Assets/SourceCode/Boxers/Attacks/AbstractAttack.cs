@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Assets.SourceCode.Boxers.Attacks {
-    abstract class AbstractAttack {
+    public abstract class AbstractAttack {
         internal AbstractAttack() { }
 
         public abstract int FullDamage { get; }

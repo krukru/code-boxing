@@ -14,7 +14,7 @@ using Assets.SourceCode.Strategies.Debug;
 
 namespace Assets.SourceCode.Controllers {
 #pragma warning disable 0649
-    class MatchController : MonoBehaviour {
+    public class MatchController : MonoBehaviour {
 
         public enum FightResult {
             RED_WON,
@@ -45,13 +45,12 @@ namespace Assets.SourceCode.Controllers {
 
         private void Start() {
             if (debugMode) {
-                this.redBoxer = new Boxer(new DerpStrategy(), Boxer.Color.RED);
-                this.blueBoxer = new Boxer(new DerpStrategy(), Boxer.Color.BLUE);
+                this.redStrategy = new DerpStrategy();
+                this.blueStrategy = new DerpStrategy();
             }
-            else {
-                this.redBoxer = new Boxer(redStrategy, Boxer.Color.RED);
-                this.blueBoxer = new Boxer(blueStrategy, Boxer.Color.BLUE);
-            }
+            this.redStrategy = GetComponent<ScriptInjector>().myScript_Instance;
+            this.redBoxer = new Boxer(redStrategy, Boxer.Color.RED);
+            this.blueBoxer = new Boxer(blueStrategy, Boxer.Color.BLUE);
             SubscribeToBoxerEvents(redBoxer);
             SubscribeToBoxerEvents(blueBoxer);
             ResolveFight(redBoxer, blueBoxer);

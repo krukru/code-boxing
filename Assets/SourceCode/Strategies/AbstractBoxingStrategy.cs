@@ -6,7 +6,7 @@ using Assets.SourceCode.Boxers;
 using Assets.SourceCode.Api;
 
 namespace Assets.SourceCode.Strategies {
-    abstract class AbstractBoxingStrategy {
+    public abstract class AbstractBoxingStrategy {
 
         private Boxer boxer;
 

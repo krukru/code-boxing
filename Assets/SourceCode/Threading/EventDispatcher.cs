@@ -7,7 +7,7 @@ using Assets.SourceCode.Events;
 using UnityEngine;
 
 namespace Assets.SourceCode.Threading {
-    class EventDispatcher : MonoBehaviour {
+    public class EventDispatcher : MonoBehaviour {
 
         private static EventDispatcher instance;
         public static EventDispatcher Instance {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Assets.SourceCode.Boxers.Attacks {
-    class LiverShot : AbstractAttack {
+    public class LiverShot : AbstractAttack {
         public override int FullDamage {
             get { return 15; }
         }

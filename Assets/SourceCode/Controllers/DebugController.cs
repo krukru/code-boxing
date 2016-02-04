@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Assets.SourceCode.Controllers {
 #pragma warning disable 0649
-    class DebugController : MonoBehaviour {
+    public class DebugController : MonoBehaviour {
         public MatchController matchController;
 
         private void Update() {
