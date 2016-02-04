@@ -37,6 +37,10 @@ namespace Assets.SourceCode.Controllers {
             boxerAnimator.SetTrigger(RECEIVED_ATTACK);
             UpdateHpSlider(receiver);
         }
+        public void Knockdown(Boxer receiver) {
+            boxerAnimator.SetTrigger(KNOCKDOWN);
+            UpdateHpSlider(receiver);
+        }
 
         public void UpdateHpSlider(Boxer boxer) {
             hpSlider.value = (float)boxer.HitPoints;
@@ -65,10 +69,6 @@ namespace Assets.SourceCode.Controllers {
                     throw new UnityException("Undefined stance");
             }
             boxerAnimator.SetTrigger(stanceTrigger);
-        }
-
-        public void Knockdown(Boxer receiver) {
-            boxerAnimator.SetTrigger(KNOCKDOWN);
         }
     }
 }

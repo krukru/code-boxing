@@ -22,7 +22,7 @@ namespace Assets.SourceCode.Boxers.Attacks {
         }
 
         public override int StunDurationInMs {
-            get { return 0; }
+            get { return 100; }
         }
 
         public override bool IsDodgeable {

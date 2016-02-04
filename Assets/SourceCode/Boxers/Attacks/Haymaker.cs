@@ -6,7 +6,7 @@ using System.Text;
 namespace Assets.SourceCode.Boxers.Attacks {
     class Haymaker : AbstractAttack {
         public override int FullDamage {
-            get { return 50; }
+            get { return 30; }
         }
 
         public override int BlockedDamage {
