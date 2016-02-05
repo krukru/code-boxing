@@ -9,9 +9,12 @@ namespace Assets.SourceCode.Strategies.Debug {
     public class TestBlueStrategy : AbstractBoxingStrategy {
 
         public override void Act() {
+            Do.ChangeStance(Boxer.Stance.BLOCKING);
+            Do.Attack(Attacks.LiverShot);
             Do.RecoverStamina();
-            Do.Attack(Attacks.Jab);
-            Do.Attack(Attacks.Jab);
+            Do.Attack(Attacks.LiverShot);
+            Do.ChangeStance(Boxer.Stance.DODGING);
+            Do.RecoverStamina();
             Do.RecoverStamina();
         }
     }

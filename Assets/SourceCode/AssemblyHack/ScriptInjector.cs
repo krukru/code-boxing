@@ -2,6 +2,7 @@
 using System.CodeDom.Compiler;
 using System.Reflection;
 using Assets.SourceCode.Strategies;
+using CSharpCompiler;
 using Microsoft.CSharp;
 using UnityEngine;
 
@@ -39,7 +40,8 @@ using Assets.SourceCode.Boxers.Attacks;
             compilerErrorMessages = "";  // clear any previous messages
 
             // ********** Create an instance of the C# compiler   
-            CSharpCodeProvider codeProvider = new CSharpCodeProvider();
+            //CSharpCodeProvider codeProvider = new CSharpCodeProvider();
+            CSharpCompiler.CodeCompiler codeCompiler = new CSharpCompiler.CodeCompiler();
 
             // ********** add compiler parameters
             CompilerParameters compilerParams = new CompilerParameters();
@@ -49,10 +51,10 @@ using Assets.SourceCode.Boxers.Attacks;
             compilerParams.IncludeDebugInformation = true;
             compilerParams.ReferencedAssemblies.Add("System.dll");
             compilerParams.ReferencedAssemblies.Add("System.Core.dll");
-            compilerParams.ReferencedAssemblies.Add(@"C:\Users\Kru\Unity\code-boxing\obj\Debug\Assembly-CSharp.dll");
+            compilerParams.ReferencedAssemblies.Add(Assembly.GetCallingAssembly().Location);
 
             // ********** actually compile the code  ??????? THIS LINE WORKS IN UNITY EDITOR --- BUT NOT IN BUILD ??????????
-            CompilerResults results = codeProvider.CompileAssemblyFromSource(compilerParams, scriptText);
+            CompilerResults results = codeCompiler.CompileAssemblyFromSource(compilerParams, scriptText);
 
             // ********** Do we have any compiler errors
             if (results.Errors.Count > 0) {
@@ -77,6 +79,7 @@ using Assets.SourceCode.Boxers.Attacks;
         }
         catch (Exception o) {
             Debug.LogError("" + o.Message + "\n" + o.Source + "\n" + o.StackTrace + "\n");
+            throw o;
         }
 
         Debug.Log(compilerErrorMessages);

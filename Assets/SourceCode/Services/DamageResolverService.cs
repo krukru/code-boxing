@@ -26,7 +26,7 @@ namespace Assets.SourceCode.Services {
                         result = attack.BlockedDamage;
                         break;
                     case Boxer.Stance.DODGING:
-                        result = attack.IsDodgeable ? attack.FullDamage : 0;
+                        result = attack.IsDodgeable ? 0 : attack.FullDamage;
                         break;
                     case Boxer.Stance.STAGGERING:
                         result = attack.FullDamage * STAGGERING_DAMAGE_MULTIPLIER;
