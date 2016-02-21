@@ -20,6 +20,18 @@ namespace Assets.SourceCode.Api {
             boxer.Attack(attack);
         }
 
+        public bool TryScanOpponent(out BoxerStatus status) {
+            ResolveAccumulatedStun();
+            if (boxer.CanSeeOpponent()) {
+                status = new BoxerStatus(boxer.Opponent);
+                return true;
+            }
+            else {
+                status = null;
+                return false;
+            }
+        }
+
         public void RecoverStamina() {
             try {
                 Thread.Sleep(1000);
@@ -32,9 +44,18 @@ namespace Assets.SourceCode.Api {
             }
         }
 
+        public void RecoverStaminaUpTo(int targetStamina) {
+            if (targetStamina < 0 || targetStamina > 100) {
+                throw new ArgumentException();
+            }
+            while (boxer.Stamina < targetStamina) {
+                RecoverStamina();
+            }
+        }
+
         public void ChangeStance(Boxer.Stance newStance) {
-            ResolveAccumulatedStun();
             if (boxer.BoxerStance != newStance) {
+                ResolveAccumulatedStun();
                 boxer.ChangeStance(newStance);
             }
         }

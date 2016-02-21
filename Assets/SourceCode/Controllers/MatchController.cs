@@ -29,8 +29,8 @@ namespace Assets.SourceCode.Controllers {
         public Boxer redBoxer;
         public Boxer blueBoxer;
 
-        private AbstractBoxingStrategy redStrategy = new TestRedStrategy();
-        private AbstractBoxingStrategy blueStrategy = new TestBlueStrategy();
+        private AbstractBoxingStrategy redStrategy = null;
+        private AbstractBoxingStrategy blueStrategy = null;
 
         private Thread redBoxerThread;
         private Thread blueBoxerThread;
@@ -40,15 +40,18 @@ namespace Assets.SourceCode.Controllers {
         private void OnApplicationQuit() {
             Debug.Log("Killing threads in a very bad way");
             redBoxerThread.Abort();
-            blueBoxerThread.Abort(); 
+            blueBoxerThread.Abort();
         }
 
         private void Start() {
             if (debugMode) {
-                this.redStrategy = new DerpStrategy();
-                this.blueStrategy = new DerpStrategy();
+                this.redStrategy = new TestRedStrategy();
+                this.blueStrategy = new TestBlueStrategy();
             }
-            this.redStrategy = GetComponent<ScriptInjector>().myScript_Instance;
+            else {
+                this.redStrategy = GetComponent<ScriptInjector>().RedStrategy;
+                this.blueStrategy = GetComponent<ScriptInjector>().BlueStrategy;
+            }
             this.redBoxer = new Boxer(redStrategy, Boxer.Color.RED);
             this.blueBoxer = new Boxer(blueStrategy, Boxer.Color.BLUE);
             SubscribeToBoxerEvents(redBoxer);
@@ -93,7 +96,7 @@ namespace Assets.SourceCode.Controllers {
             else {
                 boxerController.AttackReceived(receiver);
             }
-            
+
         }
         void boxer_StanceChanged(Boxer sender, EventArgs eventArgs) {
             BoxerVisualsController boxerController = GetController(sender);
@@ -131,12 +134,7 @@ namespace Assets.SourceCode.Controllers {
 
             //start the fight in 5 seconds
             DateTime startTime;
-            if (debugMode) {
-                startTime = DateTime.Now;
-            }
-            else {
-                startTime = DateTime.Now.AddSeconds(5);
-            }
+            startTime = DateTime.Now.AddSeconds(5);
             redBoxerThread.Start(startTime);
             blueBoxerThread.Start(startTime);
         }

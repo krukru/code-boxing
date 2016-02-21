@@ -49,7 +49,7 @@ namespace Assets.SourceCode.Boxers {
             }
         }
 
-        private Boxer opponent;
+        public Boxer Opponent { get; private set; }
 
         private DamageResolverService damageService = new DamageResolverService();
 
@@ -68,14 +68,26 @@ namespace Assets.SourceCode.Boxers {
         }
 
         public void StartFighting(Boxer opponent) {
-            this.opponent = opponent;
+            this.Opponent = opponent;
             this.fightActive = true;
-            int safety = 50;
             while (fightActive) {
-                Strategy.Act();
-                safety--;
-                if (safety < 0) {
-                    break;
+                if (CanSeeOpponent()) {
+                    BoxerStatus opponentStatus = new BoxerStatus(opponent);
+                    bool strategyFound = false;
+                    //TODO smisli način da ovo bude O(1) - mora bit!
+                    foreach (ConditionalStrategy cs in Strategy.ConditionalStrategies) {
+                        if (cs.PredicateSatisfied(opponentStatus)) {
+                            cs.Act();
+                            strategyFound = true;
+                            break;
+                        }
+                    }
+                    if (strategyFound == false) {
+                        Strategy.Act(); //no conditions satisfied, do main act
+                    }
+                }
+                else {
+                    Strategy.Act();
                 }
             }
         }
@@ -91,7 +103,7 @@ namespace Assets.SourceCode.Boxers {
             int castTime = attack.CastTimeInMs;
             try {
                 Thread.Sleep(castTime);
-                opponent.AttackLanded(attack, attackIntensityFactor);
+                Opponent.AttackLanded(attack, attackIntensityFactor);
             }
             catch (ThreadInterruptedException) {
                 //attack interrupted
@@ -172,6 +184,10 @@ namespace Assets.SourceCode.Boxers {
         public void ClearStun() {
             this.StunDuration = 0;
             ChangeStance(stanceBeforeStun);
+        }
+
+        public bool CanSeeOpponent() {
+            return BoxerStance != Stance.BLOCKING;
         }
     }
 }
